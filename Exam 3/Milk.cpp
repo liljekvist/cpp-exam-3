@@ -33,7 +33,7 @@
  */
 std::string Milk::GetDescription() const
 {
-    return std::string();
+    return "Milk, " + std::to_string(liters) + " liters, " + PerishableProduct::GetDescription();
 }
 
 /**
@@ -43,7 +43,8 @@ std::string Milk::GetDescription() const
  * Calls the constructor of the direct base class.
  */
 Milk::Milk(float price, const Date& expirationDate, float liters)
-    : PerishableProduct(float(), Date())
+    : PerishableProduct(price, expirationDate)
+    , liters(liters)
 {
 }
 
@@ -54,7 +55,7 @@ Milk::Milk(float price, const Date& expirationDate, float liters)
  */
 float Milk::GetLiters() const
 {
-    return float();
+    return this->liters;
 }
 
 /**
@@ -69,7 +70,7 @@ float Milk::GetLiters() const
  */
 float Milk::GetStorageVolume() const
 {
-    return float();
+    return (this->liters / 1000.f);
 }
 
 /**
