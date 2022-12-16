@@ -24,13 +24,13 @@
  */
 std::string Product::GetDescription() const
 {
-    return std::string();
+    return std::to_string(price) + " kr";
 }
 
 /**
  * Constructs a new Product object with a given price.
  */
-Product::Product(float price) {}
+Product::Product(float price): price(price) {}
 
 /**
  * Getter for the member price.
@@ -39,7 +39,7 @@ Product::Product(float price) {}
  */
 float Product::GetPrice() const
 {
-    return float();
+    return this->price;
 }
 
 /**
@@ -62,5 +62,5 @@ float Product::GetPrice() const
  */
 std::string Product::GetProductDescription() const
 {
-    return std::string();
+    return GetDescription();
 }
