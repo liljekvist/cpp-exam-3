@@ -33,7 +33,7 @@
  */
 std::string EggPackage::GetDescription() const
 {
-    return std::string();
+    return "Eggs, " + std::to_string(eggQuantity) + "-pack, " + PerishableProduct::GetDescription();
 }
 
 /**
@@ -43,7 +43,8 @@ std::string EggPackage::GetDescription() const
  * Calls the constructor of the direct base class.
  */
 EggPackage::EggPackage(float price, const Date& expirationDate, int eggQuantity)
-    : PerishableProduct(float(), Date())
+    : PerishableProduct(price, expirationDate)
+    , eggQuantity(eggQuantity)
 {
 }
 
@@ -54,7 +55,7 @@ EggPackage::EggPackage(float price, const Date& expirationDate, int eggQuantity)
  */
 int EggPackage::GetEggQuantity() const
 {
-    return int();
+    return this->eggQuantity;
 }
 
 /**
@@ -69,7 +70,7 @@ int EggPackage::GetEggQuantity() const
  */
 float EggPackage::GetStorageVolume() const
 {
-    return float();
+    return (0.000125f * eggQuantity);
 }
 
 /**
