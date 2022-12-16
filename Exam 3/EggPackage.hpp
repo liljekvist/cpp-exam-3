@@ -9,26 +9,24 @@
  *     - A price
  *     - An expiration date
  *     - The number of eggs in the package.
- * 
+ *
  * The required storage volume of an egg package product can be calculated
  * using the following formula:
- * 
+ *
  *     0.000125f * eggQuantity
- * 
+ *
  * This class definition can't be changed as it will not submitted with the
  * rest of the files in the assignment. A copy of this file exists in
  * CodeGrade.
  */
-class EggPackage : public PerishableProduct
+class EggPackage: public PerishableProduct
 {
     int eggQuantity;
 
-protected:
-
+  protected:
     std::string GetDescription() const override;
 
-public:
-
+  public:
     EggPackage(float price, const Date& expirationDate, int eggQuantity);
     ~EggPackage() override = default; // No need to define this manually.
 

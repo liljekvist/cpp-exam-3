@@ -1,16 +1,16 @@
 #include <iostream>
 
-#include "StoreStock.hpp"
 #include "EggPackage.hpp"
 #include "Milk.hpp"
 #include "Shovel.hpp"
+#include "StoreStock.hpp"
 
 /**
  * Hello! Please read the provided README.md before starting! :)
- * 
+ *
  * This main file is provided in order to test your solution on your own, and
  * will not be submitten in the assignmnent.
- * 
+ *
  * The code below utlize some of the core functionality of the classes. Feel
  * free to add your own code to test all the functions you implement.
  */
@@ -19,7 +19,7 @@ void PrintStore(const std::string& storeName, StoreStock& store)
 {
     std::cout << "Products in " << storeName << ":\n";
     // "ranged-based for", possible because of StoreStock::begin() and StoreStock::end() :)
-    for (auto product : store)
+    for(auto product : store)
         std::cout << "  - " << product->GetProductDescription() << "\n";
     std::cout << std::endl;
 }
@@ -37,15 +37,14 @@ int main()
     PrintStore("myStore", myStore);
 
     Shovel* lowestPriceShovel = myStore.GetCheapest<Shovel>();
-    std::cout << "Lowest shovel price: "
-        << lowestPriceShovel->GetPrice() // Should be 249.f
-        << "\n";
+    std::cout << "Lowest shovel price: " << lowestPriceShovel->GetPrice() // Should be 249.f
+              << "\n";
 
     {
         /**
          * This is a nameless scope. The objects created in this scope will be
          * destroyed when the scope ends, as they will go "out-of-scope".
-         * 
+         *
          * This way, you can easier test if object copies works as intended.
          */
 
@@ -75,7 +74,9 @@ int main()
         PrintStore("anotherStore (after assigned myStore)", anotherStore);
 
         anotherStore = anotherStore;
-        PrintStore("anotherStore (after assigned itself, should not have any changes)", anotherStore);
+        PrintStore(
+            "anotherStore (after assigned itself, should not have any changes)",
+            anotherStore);
     }
 
     // Test more functions on your own, so they work as intended. :)

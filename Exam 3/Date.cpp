@@ -6,26 +6,20 @@
 #include <stdexcept>
 #include <string>
 
-Date::Date() : day(1), month(1), year(0)
-{
+Date::Date(): day(1), month(1), year(0) {}
 
-}
-
-Date::Date(unsigned int day, unsigned int month, unsigned int year) :
-    day(day), month(month), year(year)
+Date::Date(unsigned int day, unsigned int month, unsigned int year)
+    : day(day)
+    , month(month)
+    , year(year)
 {
-    if (!IsValidDate(this->day, this->month, this->year))
+    if(!IsValidDate(this->day, this->month, this->year))
         throw std::invalid_argument(
             "Invalid date values: day=" + std::to_string(this->day)
-            + ", month=" + std::to_string(this->month)
-            + ", year=" + std::to_string(this->year));
+            + ", month=" + std::to_string(this->month) + ", year=" + std::to_string(this->year));
 }
 
-Date::Date(const Date& other) :
-    day(other.day), month(other.month), year(other.year)
-{
-
-}
+Date::Date(const Date& other): day(other.day), month(other.month), year(other.year) {}
 
 Date& Date::operator=(const Date& other)
 {
@@ -89,7 +83,7 @@ void Date::SetDate(unsigned int day, unsigned int month, unsigned int year)
 
 unsigned int Date::GetDay() const
 {
-    return this->day;    
+    return this->day;
 }
 
 unsigned int Date::GetMonth() const
@@ -104,17 +98,18 @@ unsigned int Date::GetYear() const
 
 std::string Date::GetString() const
 {
-    return std::to_string(this->day) + "-" + std::to_string(this->month) + "-" + std::to_string(this->year);
+    return std::to_string(this->day) + "-" + std::to_string(this->month) + "-"
+           + std::to_string(this->year);
 }
 
 unsigned int Date::GetCombinedDateValue() const
 {
     /**
      * Priority: year-month-date
-     * 
+     *
      * january 15th 2022 as a combined value: 20220115
      * october 9th 2023 as a combined value: 20231009
-     * 
+     *
      * Comparing example: 20231009 > 20220115 Ok!
      */
     return this->year * 10000 + this->month * 100 + this->day;
@@ -137,11 +132,11 @@ unsigned int Date::GetTotalDaysOfMonth(unsigned int month, unsigned int year)
 
     // February is a special case -> handle it first
     unsigned int day = 0;
-    if (month == FEBRUARY)
-        day = 28 + ((IsLeapYear(year)) ? 1 : 0); 
+    if(month == FEBRUARY)
+        day = 28 + ((IsLeapYear(year)) ? 1 : 0);
     else
     {
-        switch (month)
+        switch(month)
         {
             case JANUARY:
             case MARCH:
@@ -149,15 +144,11 @@ unsigned int Date::GetTotalDaysOfMonth(unsigned int month, unsigned int year)
             case JULY:
             case AUGUST:
             case OCTOBER:
-            case DECEMBER:
-                day = 31;
-                break;
+            case DECEMBER: day = 31; break;
             case APRIL:
             case JUNE:
             case SEPTEMBER:
-            case NOVEMBER:
-                day = 30;
-                break;
+            case NOVEMBER: day = 30; break;
         };
     }
     return day;
@@ -166,8 +157,8 @@ unsigned int Date::GetTotalDaysOfMonth(unsigned int month, unsigned int year)
 bool Date::IsLeapYear(unsigned int year)
 {
     /**
-     * https://en.wikipedia.org/wiki/Leap_year : 
-     * 
+     * https://en.wikipedia.org/wiki/Leap_year :
+     *
      *    "Every year that is exactly divisible by four is a leap year, except
      *     for years that are exactly divisible by 100, but these centurial
      *     years are leap years if they are exactly divisible by 400. For
@@ -178,10 +169,10 @@ bool Date::IsLeapYear(unsigned int year)
     bool divisableByFour = (year % 4 == 0);
     bool divisableByHundred = (year % 100 == 0);
     bool divisableByFourHundred = (year % 400 == 0);
-    
-    if (!divisableByFour)
+
+    if(!divisableByFour)
         return false;
-    if (!divisableByHundred) // && divisableByFour
+    if(!divisableByHundred) // && divisableByFour
         return true;
     return divisableByFourHundred; // && divisableByFour && divisableByHundred
 }

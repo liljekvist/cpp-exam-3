@@ -9,8 +9,7 @@
 
 class Date
 {
-public:
-
+  public:
     Date();
     Date(unsigned int day, unsigned int month, unsigned int year);
     Date(const Date& other);
@@ -34,9 +33,8 @@ public:
     unsigned int GetYear() const;
 
     std::string GetString() const;
-    
-private:
 
+  private:
     unsigned int day;
     unsigned int month;
     unsigned int year;
