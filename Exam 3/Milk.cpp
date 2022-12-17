@@ -89,5 +89,7 @@ float Milk::GetStorageVolume() const
  */
 Product* Milk::Clone() const
 {
-    return nullptr;
+    Product* nProduct =
+        new Milk(Product::GetPrice(), PerishableProduct::GetExpirationDate(), liters);
+    return nProduct;
 }
