@@ -5,6 +5,10 @@
 #include "Shovel.hpp"
 #include "StoreStock.hpp"
 
+#define _CRTDBG_MAP_ALLOC
+#include <crtdbg.h>
+#include <stdlib.h>
+
 /**
  * Hello! Please read the provided README.md before starting! :)
  *
@@ -26,59 +30,62 @@ void PrintStore(const std::string& storeName, StoreStock& store)
 
 int main()
 {
-    // Creating a store and filling it with products.
-    StoreStock myStore;
-    myStore.AddProduct(new EggPackage(35, Date(24, 12, 2022), 12));
-    myStore.AddProduct(new EggPackage(22, Date(24, 12, 2022), 6));
-    myStore.AddProduct(new Shovel(249.f, 30.f)); // <-- Cheapest shovel
-    myStore.AddProduct(new Shovel(349.f, 75.f));
-    myStore.AddProduct(new Milk(24, Date(27, 12, 2022), 500));
-
-    PrintStore("myStore", myStore);
-
-    Shovel* lowestPriceShovel = myStore.GetCheapest<Shovel>();
-    std::cout << "Lowest shovel price: " << lowestPriceShovel->GetPrice() // Should be 249.f
-              << "\n";
-
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
     {
-        /**
-         * This is a nameless scope. The objects created in this scope will be
-         * destroyed when the scope ends, as they will go "out-of-scope".
-         *
-         * This way, you can easier test if object copies works as intended.
-         */
+        // Creating a store and filling it with products.
+        StoreStock myStore;
+        myStore.AddProduct(new EggPackage(35, Date(24, 12, 2022), 12));
+        myStore.AddProduct(new EggPackage(22, Date(24, 12, 2022), 6));
+        myStore.AddProduct(new Shovel(249.f, 30.f)); // <-- Cheapest shovel
+        myStore.AddProduct(new Shovel(349.f, 75.f));
+        myStore.AddProduct(new Milk(24, Date(27, 12, 2022), 500));
 
-        StoreStock yourStore(myStore);
-        PrintStore("yourStore (as a copy of myStore)", yourStore);
+        PrintStore("myStore", myStore);
 
-        // Remove some products
-        EggPackage* pEggs = myStore.GetCheapest<EggPackage>();
-        myStore.ReleaseProduct(pEggs);
-        delete pEggs;
+        Shovel* lowestPriceShovel = myStore.GetCheapest<Shovel>();
+        std::cout << "Lowest shovel price: " << lowestPriceShovel->GetPrice() // Should be 249.f
+                  << "\n";
 
-        Shovel* pShovel = myStore.GetCheapest<Shovel>();
-        myStore.ReleaseProduct(pShovel);
-        delete pShovel;
+        {
+            /**
+             * This is a nameless scope. The objects created in this scope will be
+             * destroyed when the scope ends, as they will go "out-of-scope".
+             *
+             * This way, you can easier test if object copies works as intended.
+             */
 
-        PrintStore("yourStore (after removal)", yourStore);
-        PrintStore("myStore (after removal in yourStore)", myStore);
+            StoreStock yourStore(myStore);
+            PrintStore("yourStore (as a copy of myStore)", yourStore);
+
+            // Remove some products
+            EggPackage* pEggs = myStore.GetCheapest<EggPackage>();
+            myStore.ReleaseProduct(pEggs);
+            delete pEggs;
+
+            Shovel* pShovel = myStore.GetCheapest<Shovel>();
+            myStore.ReleaseProduct(pShovel);
+            delete pShovel;
+
+            PrintStore("yourStore (after removal)", yourStore);
+            PrintStore("myStore (after removal in yourStore)", myStore);
+        }
+
+        {
+            // Nameless scope
+
+            StoreStock anotherStore; // Empty store
+            PrintStore("anotherStore (should be empty)", anotherStore);
+
+            anotherStore = myStore;
+            PrintStore("anotherStore (after assigned myStore)", anotherStore);
+
+            anotherStore = anotherStore;
+            PrintStore(
+                "anotherStore (after assigned itself, should not have any changes)",
+                anotherStore);
+        }
     }
-
-    {
-        // Nameless scope
-
-        StoreStock anotherStore; // Empty store
-        PrintStore("anotherStore (should be empty)", anotherStore);
-
-        anotherStore = myStore;
-        PrintStore("anotherStore (after assigned myStore)", anotherStore);
-
-        anotherStore = anotherStore;
-        PrintStore(
-            "anotherStore (after assigned itself, should not have any changes)",
-            anotherStore);
-    }
-
+    _CrtDumpMemoryLeaks();
     // Test more functions on your own, so they work as intended. :)
     std::string test;
     std::cin >> test;
