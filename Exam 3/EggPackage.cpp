@@ -89,5 +89,7 @@ float EggPackage::GetStorageVolume() const
  */
 Product* EggPackage::Clone() const
 {
-    return nullptr;
+    Product* nEggs =
+        new EggPackage(Product::GetPrice(), PerishableProduct::GetExpirationDate(), eggQuantity);
+    return nEggs;
 }
