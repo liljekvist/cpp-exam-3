@@ -52,10 +52,10 @@ StoreStock& StoreStock::operator=(const StoreStock& other)
 {
     if(this != &other)
     {
-        for(auto& productPtr : this->products)
+        for(auto it = begin(); it != end();)
         {
-            ReleaseProduct(productPtr); // kanske inte funkar för listan blir mindre medans den kör
-            delete productPtr;
+            delete *it;
+            it = products.erase(it);
         }
 
         for(auto& productPtr : other.products)
@@ -104,7 +104,9 @@ float StoreStock::GetTotalCost() const
  */
 bool StoreStock::AddProduct(Product* product)
 {
-    if(!std::any_of(begin(), end(), [&product](const Product* elem) { return (elem == product); }))
+    if(product != nullptr && !std::any_of(begin(), end(), [&product](const Product* elem) {
+           return (elem == product);
+       }))
         this->products.push_back(product);
     else
         return false;

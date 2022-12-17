@@ -101,7 +101,7 @@ int StoreStock::GetNumberOf() const
     int counter = 0;
     for(auto& product : products)
     {
-        if(T* cProduct = dynamic_cast<T*>(product)) // not nullptr
+        if(T* cProduct = dynamic_cast<T*>(product))
             counter++;
     };
     return counter;
