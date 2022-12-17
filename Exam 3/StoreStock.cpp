@@ -50,15 +50,18 @@ StoreStock::~StoreStock()
  */
 StoreStock& StoreStock::operator=(const StoreStock& other)
 {
-    for(auto& productPtr : this->products)
+    if(this != &other)
     {
-        ReleaseProduct(productPtr); // kanske inte funkar för listan blir mindre medans den kör
-        delete productPtr;
-    }
+        for(auto& productPtr : this->products)
+        {
+            ReleaseProduct(productPtr); // kanske inte funkar för listan blir mindre medans den kör
+            delete productPtr;
+        }
 
-    for(auto& productPtr : other.products)
-    {
-        this->AddProduct(productPtr->Clone());
+        for(auto& productPtr : other.products)
+        {
+            this->AddProduct(productPtr->Clone());
+        }
     }
     return *this;
 }
@@ -101,8 +104,7 @@ float StoreStock::GetTotalCost() const
  */
 bool StoreStock::AddProduct(Product* product)
 {
-    auto productIter = std::find(begin(), begin(), product);
-    if(productIter == end())
+    if(!std::any_of(begin(), end(), [&product](const Product* elem) { return (elem == product); }))
         this->products.push_back(product);
     else
         return false;
@@ -126,7 +128,7 @@ bool StoreStock::ReleaseProduct(Product* product)
 {
     bool deleted = false;
     products.erase(std::remove_if(begin(), end(), [&product, &deleted](const Product* x) {
-        deleted == true;
+        deleted = true;
         return (x == product);
     }));
     return deleted;
