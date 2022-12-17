@@ -19,14 +19,26 @@ StoreStock::StoreStock() {}
  *
  * @param other An object to create a copy of.
  */
-StoreStock::StoreStock(const StoreStock& other) {}
+StoreStock::StoreStock(const StoreStock& other)
+{
+    for(auto& productPtr : other.products)
+    {
+        this->AddProduct(productPtr->Clone());
+    }
+}
 
 /**
  * Sets the object in a destrubtable state.
  *
  * Frees all remainding products in the object.
  */
-StoreStock::~StoreStock() {}
+StoreStock::~StoreStock()
+{
+    for(auto& productPtr : this->products)
+    {
+        delete productPtr;
+    }
+}
 
 /**
  * Makes the object an exact copy of another StoreStock object by freeing all
@@ -38,6 +50,16 @@ StoreStock::~StoreStock() {}
  */
 StoreStock& StoreStock::operator=(const StoreStock& other)
 {
+    for(auto& productPtr : this->products)
+    {
+        ReleaseProduct(productPtr); // kanske inte funkar för listan blir mindre medans den kör
+        delete productPtr;
+    }
+
+    for(auto& productPtr : other.products)
+    {
+        this->AddProduct(productPtr->Clone());
+    }
     return *this;
 }
 
@@ -48,7 +70,7 @@ StoreStock& StoreStock::operator=(const StoreStock& other)
  */
 int StoreStock::GetSize() const
 {
-    return int();
+    return this->products.size();
 }
 
 /**
@@ -58,7 +80,12 @@ int StoreStock::GetSize() const
  */
 float StoreStock::GetTotalCost() const
 {
-    return float();
+    float tCost = 0;
+    for(auto& productPtr : this->products)
+    {
+        tCost += productPtr->GetPrice();
+    }
+    return tCost;
 }
 
 /**
@@ -74,7 +101,12 @@ float StoreStock::GetTotalCost() const
  */
 bool StoreStock::AddProduct(Product* product)
 {
-    return bool();
+    auto productIter = std::find(begin(), begin(), product);
+    if(productIter == end())
+        this->products.push_back(product);
+    else
+        return false;
+    return true;
 }
 
 /**
@@ -92,7 +124,12 @@ bool StoreStock::AddProduct(Product* product)
  */
 bool StoreStock::ReleaseProduct(Product* product)
 {
-    return bool();
+    bool deleted = false;
+    products.erase(std::remove_if(begin(), end(), [&product, &deleted](const Product* x) {
+        deleted == true;
+        return (x == product);
+    }));
+    return deleted;
 }
 
 /**
@@ -105,5 +142,10 @@ bool StoreStock::ReleaseProduct(Product* product)
  */
 float StoreStock::GetRequiredStorageVolume() const
 {
-    return float();
+    float tVolume = 0;
+    for(auto& productPtr : this->products)
+    {
+        tVolume += productPtr->GetStorageVolume();
+    }
+    return tVolume;
 }

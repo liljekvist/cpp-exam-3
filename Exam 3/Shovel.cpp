@@ -86,5 +86,6 @@ float Shovel::GetStorageVolume() const
  */
 Product* Shovel::Clone() const
 {
-    return nullptr;
+    auto nShovel = new Shovel(Product::GetPrice(), bladeWidth);
+    return nShovel;
 }

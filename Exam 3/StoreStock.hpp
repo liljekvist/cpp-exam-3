@@ -74,7 +74,17 @@ class StoreStock
 template<typename T>
 T* StoreStock::GetCheapest() const
 {
-    return nullptr;
+    T* chProduct = nullptr; // CHeapest Product
+    std::for_each(start(), end(), [](const Product* elem) {
+        if(T* cProduct = dynamic_cast<T*>(elem)) // not nullptr. Casted Product
+        {
+            if(chProduct != nullptr; chProduct->price > cProduct->price)
+            {
+                chProduct = cProduct;
+            }
+        }
+    });
+    return chProduct;
 }
 
 /**
@@ -85,5 +95,10 @@ T* StoreStock::GetCheapest() const
 template<typename T>
 int StoreStock::GetNumberOf() const
 {
-    return int();
+    int counter = 0;
+    std::for_each(start(), end(), [&counter](const Product* elem) {
+        if(T* cProduct = dynamic_cast<T*>(elem)) // not nullptr
+            counter++;
+    });
+    return counter;
 }

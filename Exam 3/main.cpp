@@ -80,6 +80,7 @@ int main()
     }
 
     // Test more functions on your own, so they work as intended. :)
-
+    std::string test;
+    std::cin >> test;
     return 0;
 }
